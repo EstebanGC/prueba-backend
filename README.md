@@ -1,30 +1,36 @@
+# Enfoque Técnico y Despliegue
 
-##Enfoque y decisiones técnicas
+## Enfoque y Decisiones Técnicas
 
-    Utilicé TypeORM por su estructura modular y similitud con el estilo de NestJ, PostgreSQL en local (También se puede utilizar Docker con un archivo docker-compose.yml para levantar una instancia de PostgreSQL de manera rápida.
+- **Base de Datos**  
+  Se utilizó PostgreSQL en entorno local. También puede usarse Docker mediante un archivo `docker-compose.yml` para levantar una instancia rápidamente.
 
-    Configuración de variables por .env usando @nestjs/config
+- **ORM**  
+  Se eligió TypeORM por su estructura modular y su similitud con el estilo de desarrollo de NestJS.
 
-    Validaciones con class-validator en DTOs
+- **Gestión de Configuración**  
+  Las variables de entorno se manejan mediante archivos `.env` utilizando la librería `@nestjs/config`.
 
-    Manejo de excepciones con NotFoundException
+- **Validación de Datos**  
+  Se implementaron validaciones en los DTOs utilizando la librería `class-validator`.
 
-    Pruebas unitarias con Jest para ProductsService
+- **Manejo de Excepciones**  
+  Se utilizaron clases de excepción como `NotFoundException` para manejar errores comunes en la API.
 
+- **Pruebas Unitarias**  
+  Las pruebas se implementaron con Jest, enfocándose en el servicio `ProductsService`.
 
+## Soluciones Adicionales
 
-##Soluciones adicionales
+### Despliegue en AWS
 
-#Deployment
+1. Crear un `Dockerfile` para construir una imagen de la API.
+2. Subir la imagen a un repositorio en Amazon ECR.
+3. Crear una instancia de base de datos PostgreSQL en Amazon RDS.
+4. Configurar las reglas de seguridad para que el puerto 5432 solo esté disponible para ECS.
+5. Crear un Task Definition en ECS utilizando la imagen construida y las variables de entorno necesarias.
 
-Para el despliegue con AWS:
-Creamos un Dockerfile para construir una imagen de la API. 
-Subimos la imagen a Amazon ECR.
-Creamos instancia de PostgreSQL en Amazon RDS
-Configuramos seguridad: puerto 5432 abierto solo a ECS.
-Definimos un Task Definition con la imagen de la API del primer punto y variables de entorno tomadas de Secrets Manager.
+### Manejo de Secretos con AWS Secrets Manager
 
-
-Para el manejo de secretos con AWS Secrets Manager
-Guardar valores como DB_HOST, DB_USER, DB_PASSWORD, etc. en Secrets Manager.
-En el Task Definition de ECS, asociar los secretos como variables de entorno.
+- Guardar los secrets como `DB_HOST`, `DB_USER`, `DB_PASSWORD`, etc., en AWS Secrets Manager.
+- Asociar los secrets como variables de entorno en la Task Definition de ECS.
